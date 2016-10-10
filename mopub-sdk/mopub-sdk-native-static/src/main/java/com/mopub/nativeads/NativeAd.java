@@ -197,7 +197,7 @@ public class NativeAd {
 
     // Event Handlers
     @VisibleForTesting
-    void recordImpression(@Nullable final View view) {
+    public void recordImpression(@Nullable final View view) {
         if (mRecordedImpression || mIsDestroyed) {
             return;
         }
@@ -211,7 +211,7 @@ public class NativeAd {
     }
 
     @VisibleForTesting
-    void handleClick(@Nullable final View view) {
+    public void handleClick(@Nullable final View view) {
         if (mIsClicked || mIsDestroyed) {
             return;
         }
