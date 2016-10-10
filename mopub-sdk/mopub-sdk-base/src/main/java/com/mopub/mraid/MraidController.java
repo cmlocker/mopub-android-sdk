@@ -171,7 +171,7 @@ public class MraidController {
         mCloseableAdContainer.addView(dimmingView,
                 new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-        mOrientationBroadcastReceiver.register(mContext);
+//        mOrientationBroadcastReceiver.register(mContext);
 
         mMraidBridge.setMraidBridgeListener(mMraidBridgeListener);
         mTwoPartBridge.setMraidBridgeListener(mTwoPartBridgeListener);
@@ -522,6 +522,9 @@ public class MraidController {
 
                         int[] location = new int[2];
                         View rootView = getRootView();
+                        if (rootView == null) {
+                            return;
+                        }
                         rootView.getLocationOnScreen(location);
                         mScreenMetrics.setRootViewPosition(location[0], location[1],
                                 rootView.getWidth(),
@@ -581,13 +584,13 @@ public class MraidController {
     public void destroy() {
         mScreenMetricsWaiter.cancelLastRequest();
 
-        try {
-            mOrientationBroadcastReceiver.unregister();
-        } catch (IllegalArgumentException e) {
-            if (!e.getMessage().contains("Receiver not registered")) {
-                throw e;
-            } // Else ignore this exception.
-        }
+//        try {
+//            mOrientationBroadcastReceiver.unregister();
+//        } catch (IllegalArgumentException e) {
+//            if (!e.getMessage().contains("Receiver not registered")) {
+//                throw e;
+//            } // Else ignore this exception.
+//        }
 
         // Pause the controller to make sure the video gets stopped.
         if (!mIsPaused) {
@@ -724,7 +727,10 @@ public class MraidController {
             mDefaultAdContainer.setVisibility(View.INVISIBLE);
             mCloseableAdContainer.addView(mMraidWebView,
                     new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-            getRootView().addView(mCloseableAdContainer, layoutParams);
+            ViewGroup rootView = getRootView();
+            if (rootView != null) {
+                rootView.addView(mCloseableAdContainer, layoutParams);
+            }
         } else if (mViewState == ViewState.RESIZED) {
             mCloseableAdContainer.setLayoutParams(layoutParams);
         }
@@ -772,8 +778,11 @@ public class MraidController {
                 mDefaultAdContainer.setVisibility(View.INVISIBLE);
                 mCloseableAdContainer.addView(mMraidWebView, layoutParams);
             }
-            getRootView().addView(mCloseableAdContainer,
-                    new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            ViewGroup rootView = getRootView();
+            if (rootView != null) {
+                rootView.addView(mCloseableAdContainer,
+                        new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            }
         } else if (mViewState == ViewState.RESIZED) {
             if (isTwoPart) {
                 // Move the ad back to the original container so that when we close the
@@ -821,7 +830,10 @@ public class MraidController {
                         LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
                 mDefaultAdContainer.setVisibility(View.VISIBLE);
             }
-            getRootView().removeView(mCloseableAdContainer);
+            ViewGroup rootView = getRootView();
+            if (rootView != null) {
+                rootView.removeView(mCloseableAdContainer);
+            }
 
             // Set the view state to default
             setViewState(ViewState.DEFAULT);
@@ -831,7 +843,6 @@ public class MraidController {
         }
     }
 
-    @NonNull
     @TargetApi(VERSION_CODES.KITKAT)
     private ViewGroup getRootView() {
         if (mRootView == null) {
@@ -839,6 +850,10 @@ public class MraidController {
             // handlePageLoad.
             if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
                 Preconditions.checkState(mDefaultAdContainer.isAttachedToWindow());
+            }
+
+            if(!mDefaultAdContainer.isAttachedToWindow()){
+                return null;
             }
 
             mRootView = (ViewGroup) mDefaultAdContainer.getRootView().findViewById(

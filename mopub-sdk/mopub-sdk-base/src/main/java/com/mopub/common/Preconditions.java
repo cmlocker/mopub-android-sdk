@@ -27,14 +27,14 @@ public final class Preconditions {
      * Ensures the truth of an expression.
      */
     public static void checkArgument(boolean expression) {
-        checkArgumentInternal(expression, true, "Illegal argument.", EMPTY_ARGUMENTS);
+        checkArgumentInternal(expression, false, "Illegal argument.", EMPTY_ARGUMENTS);
     }
 
     /**
      * Ensures the truth of an expression, with an error message.
      */
     public static void checkArgument(boolean expression, String errorMessage) {
-        checkArgumentInternal(expression, true, errorMessage, EMPTY_ARGUMENTS);
+        checkArgumentInternal(expression, false, errorMessage, EMPTY_ARGUMENTS);
     }
 
     /**
@@ -42,21 +42,21 @@ public final class Preconditions {
      */
     public static void checkArgument(boolean expression,
             String errorMessageTemplate, Object... errorMessageArgs) {
-        checkArgumentInternal(expression, true, errorMessageTemplate, errorMessageArgs);
+        checkArgumentInternal(expression, false, errorMessageTemplate, errorMessageArgs);
     }
 
     /**
      * Ensures the truth of an expression involving the state of the caller.
      */
     public static void checkState(boolean expression) {
-        checkStateInternal(expression, true, "Illegal state.", EMPTY_ARGUMENTS);
+        checkStateInternal(expression, false, "Illegal state.", EMPTY_ARGUMENTS);
     }
 
     /**
      * Ensures the truth of an expression involving the state of the caller, with an error message.
      */
     public static void checkState(boolean expression, String errorMessage) {
-        checkStateInternal(expression, true, errorMessage, EMPTY_ARGUMENTS);
+        checkStateInternal(expression, false, errorMessage, EMPTY_ARGUMENTS);
     }
 
     /**
@@ -65,7 +65,7 @@ public final class Preconditions {
      */
     public static void checkState(boolean expression,
             String errorMessageTemplate, Object... errorMessageArgs) {
-        checkStateInternal(expression, true, errorMessageTemplate, errorMessageArgs);
+        checkStateInternal(expression, false, errorMessageTemplate, errorMessageArgs);
     }
 
     /**
