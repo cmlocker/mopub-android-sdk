@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,9 @@ import com.mopub.mobileads.util.WebViews;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.mopub.common.event.BaseEvent.*;
+import static com.mopub.common.event.BaseEvent.Category;
+import static com.mopub.common.event.BaseEvent.Name;
+import static com.mopub.common.event.BaseEvent.SamplingRate;
 import static com.mopub.common.util.Drawables.BACKGROUND;
 import static com.mopub.common.util.Drawables.CLOSE;
 import static com.mopub.common.util.Drawables.LEFT_ARROW;
@@ -105,7 +108,9 @@ public class MoPubBrowser extends Activity {
 
         mDspCreativeId = getIntent().getStringExtra(DSP_CREATIVE_ID);
 
-        mWebView.loadUrl(getIntent().getStringExtra(DESTINATION_URL_KEY));
+        String url = getIntent().getStringExtra(DESTINATION_URL_KEY);
+        Log.i("MopubBannerLoader", "MopubBannerLoader打开的地址:" + url);
+        mWebView.loadUrl(url);
 
         mWebView.setWebViewClient(new BrowserWebViewClient(this));
 
@@ -166,6 +171,8 @@ public class MoPubBrowser extends Activity {
         WebViews.onPause(mWebView, isFinishing());
         // Pause dwell time counting.
         dwellTimeTracker.pause();
+
+        finish();
     }
 
     @Override
