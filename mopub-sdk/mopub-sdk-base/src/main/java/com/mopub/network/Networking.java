@@ -84,26 +84,14 @@ public class Networking {
                 imageLoader = sMaxWidthImageLoader;
                 if (imageLoader == null) {
                     RequestQueue queue = getRequestQueue(context);
-                    int cacheSize = DeviceUtils.memoryCacheSizeBytes(context);
-                    final LruCache<String, Bitmap> imageCache = new LruCache<String, Bitmap>(cacheSize) {
-                        @Override
-                        protected int sizeOf(String key, Bitmap value) {
-                            if (value != null) {
-                                return value.getRowBytes() * value.getHeight();
-                            }
-
-                            return super.sizeOf(key, value);
-                        }
-                    };
                     imageLoader = new MaxWidthImageLoader(queue, context, new MaxWidthImageLoader.ImageCache() {
                         @Override
                         public Bitmap getBitmap(final String key) {
-                            return imageCache.get(key);
+                            return null;
                         }
 
                         @Override
                         public void putBitmap(final String key, final Bitmap bitmap) {
-                            imageCache.put(key, bitmap);
                         }
                     });
                     sMaxWidthImageLoader = imageLoader;
