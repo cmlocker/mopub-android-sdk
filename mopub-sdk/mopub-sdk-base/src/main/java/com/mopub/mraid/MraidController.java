@@ -15,6 +15,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,12 +29,12 @@ import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
 import com.mopub.common.AdReport;
-import com.mopub.common.UrlHandler;
 import com.mopub.common.CloseableLayout;
 import com.mopub.common.CloseableLayout.ClosePosition;
 import com.mopub.common.CloseableLayout.OnCloseListener;
 import com.mopub.common.Preconditions;
 import com.mopub.common.UrlAction;
+import com.mopub.common.UrlHandler;
 import com.mopub.common.VisibleForTesting;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.common.util.DeviceUtils;
@@ -852,7 +853,7 @@ public class MraidController {
                 Preconditions.checkState(mDefaultAdContainer.isAttachedToWindow());
             }
 
-            if(!mDefaultAdContainer.isAttachedToWindow()){
+            if (!ViewCompat.isAttachedToWindow(mDefaultAdContainer)) {
                 return null;
             }
 
